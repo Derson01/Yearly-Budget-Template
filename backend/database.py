@@ -3,30 +3,14 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 
 import os
 
-# Default to a local postgres container or service
+# Get DATABASE_URL from environment
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://postgres:postgres@localhost:5432/yearly_budget_db")
 
-# Render and other platforms might provide 'postgres://', but asyncpg needs 'postgresql+asyncpg://'
-if DATABASE_URL.startswith("postgres://"):
-    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+asyncpg://", 1)
+# Fix for cloud providers (Render, Railway, etc.) that provide postgresql:// instead of postgresql+asyncpg://
+if DATABASE_URL.startswith("postgresql://"):
+    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://", 1)
 
-# Log the database host we are connecting to (masked for safety)
-from urllib.parse import urlparse
-parsed = urlparse(DATABASE_URL)
-print(f"Connecting to Database Host: {parsed.hostname}:{parsed.port or 5432}")
-
-# Check if we should use SSL
-# Internal Render URLs typically don't need SSL, while External ones do.
-connect_args = {}
-
-# If URL contains 'sslmode=require', strip it and handle in connect_args
-if "sslmode=require" in DATABASE_URL:
-    DATABASE_URL = DATABASE_URL.replace("?sslmode=require", "").replace("&sslmode=require", "")
-    connect_args["ssl"] = "require"
-elif "render.com" in DATABASE_URL or os.getenv("DB_SSL", "false").lower() == "true":
-    connect_args["ssl"] = "require"
-
-engine = create_async_engine(DATABASE_URL, echo=True, connect_args=connect_args)
+engine = create_async_engine(DATABASE_URL, echo=True)
 
 
 SessionLocal = sessionmaker(
