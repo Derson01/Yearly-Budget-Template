@@ -1,0 +1,38 @@
+# Next.js
+.next/
+out/
+build/
+node_modules/
+.env*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+.env
+.pytest_cache/
+
+# Databases
+*.db
+*.sqlite3
+
+# Docker
+.docker_data/
+postgres_data/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+
+# App related
+backend/seed_data.py
+backend/verify_logic.py
+backend/final_verify.py
