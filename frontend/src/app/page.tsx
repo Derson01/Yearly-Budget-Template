@@ -116,8 +116,8 @@ export default function DashboardPage() {
                                         </div>
                                     </div>
                                     <div className={`mt-8 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider ${(cat === 'expense' && annual_totals[cat].actual <= annual_totals[cat].planned) ||
-                                            (cat === 'income' && annual_totals[cat].actual >= annual_totals[cat].planned)
-                                            ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'
+                                        (cat === 'income' && annual_totals[cat].actual >= annual_totals[cat].planned)
+                                        ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'
                                         }`}>
                                         {cat === 'expense'
                                             ? (annual_totals[cat].actual <= annual_totals[cat].planned ? 'Under budget' : 'Over budget')
