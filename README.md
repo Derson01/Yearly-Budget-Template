@@ -61,8 +61,11 @@ Visit: http://localhost:3000
 
 1. Push frontend to GitHub
 2. Import project to Vercel
-3. Set environment variable: `NEXT_PUBLIC_API_URL` = https://winn-yearly-budget.onrender.com
-4. Deploy!
+3. **IMPORTANT SETTINGS**:
+   - Set **Root Directory** to `frontend`
+   - **Ensure all Overrides are OFF** in Build & Development settings (Vercel will auto-detect Next.js)
+4. Set environment variable: `NEXT_PUBLIC_API_URL` = https://winn-yearly-budget.onrender.com
+5. Deploy!
 
 ## 📚 API Documentation
 
