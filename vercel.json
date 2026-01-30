@@ -1,0 +1,7 @@
+{
+    "framework": "nextjs",
+    "rootDirectory": "frontend",
+    "env": {
+        "NEXT_PUBLIC_API_URL": "https://winn-yearly-budget.onrender.com"
+    }
+}
