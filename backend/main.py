@@ -40,10 +40,6 @@ async def root():
     return {"message": "Yearly Budget Backend is running"}
 
 # Include Routers
-from routers import settings, budget_items, monthly_values, transactions, dashboard, auth
-# Import models to ensure they are registered with Base.metadata
-from models import user, settings as settings_model, budget_item, monthly_value, transaction
-
 app.include_router(auth.router)
 app.include_router(settings.router)
 app.include_router(budget_items.router)

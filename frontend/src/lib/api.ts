@@ -2,13 +2,18 @@ import axios from 'axios';
 
 const getApiBaseUrl = () => {
     if (process.env.NEXT_PUBLIC_API_URL) return process.env.NEXT_PUBLIC_API_URL;
-    if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
-        return 'http://localhost:8000';
+
+    if (typeof window !== 'undefined') {
+        const hostname = window.location.hostname;
+        if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname.startsWith('192.168.')) {
+            return 'http://localhost:8000';
+        }
     }
     return 'https://winn-yearly-budget.onrender.com';
 };
 
 export const API_BASE_URL = getApiBaseUrl();
+console.log('Using API Base URL:', API_BASE_URL);
 
 const api = axios.create({
     baseURL: API_BASE_URL,
