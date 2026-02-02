@@ -15,7 +15,10 @@ elif DATABASE_URL.startswith("postgresql://"):
 
 # Render/Production usually requires SSL but often uses self-signed certificates
 ssl_context = None
-if "localhost" not in DATABASE_URL:
+# Only use SSL if we are NOT on localhost/local network and NOT in docker-compose (host 'db' or 'postgres')
+is_local = "localhost" in DATABASE_URL or "127.0.0.1" in DATABASE_URL or "@db:" in DATABASE_URL or "@postgres:" in DATABASE_URL
+
+if not is_local or os.getenv("RENDER"):
     ssl_context = ssl.create_default_context()
     ssl_context.check_hostname = False
     ssl_context.verify_mode = ssl.CERT_NONE
