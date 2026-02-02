@@ -1,6 +1,7 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
 from database import engine, Base
+# Import models to ensure they are registered with Base.metadata
+from models import user, settings as settings_model, budget_item, monthly_value, transaction
 
 app = FastAPI(
     title="Yearly Budget App Backend",
@@ -22,6 +23,15 @@ app.add_middleware(
 async def startup():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        
+        # Manual migration for existing tables created in Phase 0
+        tables = ["settings", "budget_items", "monthly_values", "transactions"]
+        for table in tables:
+            try:
+                await conn.execute(text(f"ALTER TABLE {table} ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id) ON DELETE CASCADE"))
+                print(f"Successfully ensured user_id exists in {table}")
+            except Exception as e:
+                print(f"Migration note for {table}: {e}")
 
 @app.get("/")
 async def root():

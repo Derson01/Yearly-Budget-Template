@@ -26,10 +26,13 @@ export default function LoginPage() {
             formData.append('username', email);
             formData.append('password', password);
 
+            console.log('Attempting login at:', `${API_BASE_URL}/auth/login`);
             const response = await axios.post(`${API_BASE_URL}/auth/login`, formData);
             login(response.data.access_token);
         } catch (err: any) {
-            setError(err.response?.data?.detail || 'Invalid email or password');
+            console.error('Login error:', err);
+            const detail = err.response?.data?.detail;
+            setError(detail || err.message || 'Invalid email or password');
         } finally {
             setIsLoading(false);
         }

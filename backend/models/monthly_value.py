@@ -7,7 +7,7 @@ class MonthlyValue(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     budget_item_id = Column(Integer, ForeignKey("budget_items.id"), nullable=False)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     month = Column(Integer, nullable=False) # 1 to 12
     planned_amount = Column(Numeric, default=0.00)
 

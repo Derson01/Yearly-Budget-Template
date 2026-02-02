@@ -18,7 +18,7 @@ class BudgetItem(Base):
     type = Column(String, default="active") 
     
     is_active = Column(Boolean, default=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
 
     # Relationships
     user = relationship("User", back_populates="budget_items")

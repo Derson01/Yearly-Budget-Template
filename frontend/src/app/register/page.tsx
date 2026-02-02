@@ -30,13 +30,20 @@ export default function RegisterPage() {
         setIsLoading(true);
 
         try {
+            console.log('Attempting registration at:', `${API_BASE_URL}/auth/register`);
             await axios.post(`${API_BASE_URL}/auth/register`, {
                 email,
                 password,
             });
             router.push('/login?registered=true');
         } catch (err: any) {
-            setError(err.response?.data?.detail || 'An error occurred during registration');
+            console.error('Registration error:', err);
+            const detail = err.response?.data?.detail;
+            if (Array.isArray(detail)) {
+                setError(detail[0]?.msg || 'Validation error');
+            } else {
+                setError(detail || err.message || 'An error occurred during registration');
+            }
         } finally {
             setIsLoading(false);
         }

@@ -9,7 +9,7 @@ class Transaction(Base):
     date = Column(Date, nullable=False)
     amount = Column(Numeric, nullable=False)
     budget_item_id = Column(Integer, ForeignKey("budget_items.id"), nullable=False)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     comment = Column(String, nullable=True)
 
     # Relationships
