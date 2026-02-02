@@ -1,7 +1,14 @@
 import axios from 'axios';
 
-// Use production backend if available, otherwise fallback to local
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://winn-yearly-budget.onrender.com';
+const getApiBaseUrl = () => {
+    if (process.env.NEXT_PUBLIC_API_URL) return process.env.NEXT_PUBLIC_API_URL;
+    if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+        return 'http://localhost:8000';
+    }
+    return 'https://winn-yearly-budget.onrender.com';
+};
+
+export const API_BASE_URL = getApiBaseUrl();
 
 const api = axios.create({
     baseURL: API_BASE_URL,

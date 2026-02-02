@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
-import axios from 'axios';
+import api from '@/lib/api';
 import { Eye, EyeOff } from 'lucide-react';
 
 export default function LoginPage() {
@@ -13,8 +13,6 @@ export default function LoginPage() {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const { login } = useAuth();
-
-    const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://winn-yearly-budget.onrender.com';
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -26,8 +24,8 @@ export default function LoginPage() {
             formData.append('username', email);
             formData.append('password', password);
 
-            console.log('Attempting login at:', `${API_BASE_URL}/auth/login`);
-            const response = await axios.post(`${API_BASE_URL}/auth/login`, formData);
+            console.log('Attempting login...');
+            const response = await api.post('/auth/login', formData);
             login(response.data.access_token);
         } catch (err: any) {
             console.error('Login error:', err);

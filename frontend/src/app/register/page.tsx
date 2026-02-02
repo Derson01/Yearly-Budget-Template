@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
+import api from '@/lib/api';
 import { Eye, EyeOff } from 'lucide-react';
 
 export default function RegisterPage() {
@@ -15,8 +15,6 @@ export default function RegisterPage() {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
-
-    const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://winn-yearly-budget.onrender.com';
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -30,8 +28,8 @@ export default function RegisterPage() {
         setIsLoading(true);
 
         try {
-            console.log('Attempting registration at:', `${API_BASE_URL}/auth/register`);
-            await axios.post(`${API_BASE_URL}/auth/register`, {
+            console.log('Attempting registration...');
+            await api.post('/auth/register', {
                 email,
                 password,
             });
