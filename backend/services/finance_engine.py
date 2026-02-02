@@ -9,15 +9,29 @@ from models.settings import Settings
 from typing import Dict, List, Any
 
 class FinanceEngine:
-    def __init__(self, db: AsyncSession):
+    def __init__(self, db: AsyncSession, user_id: int):
         self.db = db
+        self.user_id = user_id
 
     async def get_dashboard_summary(self) -> Dict[str, Any]:
-        items_res = await self.db.execute(select(BudgetItem).options(selectinload(BudgetItem.monthly_values)))
+        items_res = await self.db.execute(
+            select(BudgetItem)
+            .options(selectinload(BudgetItem.monthly_values))
+            .where(BudgetItem.user_id == self.user_id)
+        )
         items = items_res.scalars().all()
-        tx_res = await self.db.execute(select(Transaction))
+        
+        tx_res = await self.db.execute(
+            select(Transaction)
+            .where(Transaction.user_id == self.user_id)
+        )
         transactions = tx_res.scalars().all()
-        settings_res = await self.db.execute(select(Settings).limit(1))
+        
+        settings_res = await self.db.execute(
+            select(Settings)
+            .where(Settings.user_id == self.user_id)
+            .limit(1)
+        )
         db_settings = settings_res.scalar_one_or_none()
 
         categories = ["income", "expense", "saving", "debt"]

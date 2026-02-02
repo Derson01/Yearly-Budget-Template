@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from database import Base
 
@@ -18,7 +18,9 @@ class BudgetItem(Base):
     type = Column(String, default="active") 
     
     is_active = Column(Boolean, default=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
     # Relationships
+    user = relationship("User", back_populates="budget_items")
     monthly_values = relationship("MonthlyValue", back_populates="budget_item", cascade="all, delete-orphan")
     transactions = relationship("Transaction", back_populates="budget_item")
