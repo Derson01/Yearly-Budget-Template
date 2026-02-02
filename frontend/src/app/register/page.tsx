@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import { Eye, EyeOff } from 'lucide-react';
 
 export default function RegisterPage() {
     const [email, setEmail] = useState('');
