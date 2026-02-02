@@ -8,6 +8,8 @@ from database import get_db
 from models.user import User
 from schemas import schemas
 import os
+from datetime import datetime, timedelta
+from typing import Optional
 
 # Security configuration
 SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-change-this-in-production")
