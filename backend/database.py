@@ -2,6 +2,7 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 import os
+import ssl
 
 # Get DATABASE_URL from environment
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://postgres:postgres@localhost:5432/yearly_budget_db")
@@ -12,11 +13,17 @@ if DATABASE_URL.startswith("postgres://"):
 elif DATABASE_URL.startswith("postgresql://"):
     DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://", 1)
 
-# Render/Production usually requires SSL
+# Render/Production usually requires SSL but often uses self-signed certificates
+ssl_context = None
+if "localhost" not in DATABASE_URL:
+    ssl_context = ssl.create_default_context()
+    ssl_context.check_hostname = False
+    ssl_context.verify_mode = ssl.CERT_NONE
+
 engine = create_async_engine(
     DATABASE_URL, 
     echo=True,
-    connect_args={"ssl": True} if "localhost" not in DATABASE_URL else {}
+    connect_args={"ssl": ssl_context} if ssl_context else {}
 )
 
 
